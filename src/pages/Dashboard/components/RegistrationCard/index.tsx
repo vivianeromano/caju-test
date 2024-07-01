@@ -7,12 +7,24 @@ import {
   HiOutlineTrash
 } from 'react-icons/hi';
 import { RegistrationType } from '~/types/registrationType';
+import { useState } from 'react';
+import Modal from '~/components/ActionModal';
 
 type RegistrationCardProps = {
   data: RegistrationType;
+  removeRegistration: (id: string) => void;
 };
 
-const RegistrationCard = ({ data }: RegistrationCardProps) => {
+const RegistrationCard = ({
+  data,
+  removeRegistration
+}: RegistrationCardProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <S.Card>
       <S.IconAndText>
@@ -32,7 +44,16 @@ const RegistrationCard = ({ data }: RegistrationCardProps) => {
         <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
         <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>
 
-        <HiOutlineTrash />
+        <HiOutlineTrash onClick={handleClickOpen} />
+        <Modal
+          open={open}
+          setOpen={setOpen}
+          title="TEST"
+          description="Test"
+          action={() => {
+            removeRegistration(data.id);
+          }}
+        />
       </S.Actions>
     </S.Card>
   );

@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
 import Collumns from './components/Columns';
 import * as S from './styles';
 import { SearchBar } from './components/Searchbar';
-import { listRegistration } from '~/services/registrationService';
-import { useEffect, useState } from 'react';
+import {
+  listRegistration,
+  deleteRegistration
+} from '~/services/registrationService';
 import {
   RegistrationGroupType,
   initRegistrationGroupType
@@ -22,6 +25,17 @@ const DashboardPage = () => {
       });
   };
 
+  const removeRegistration = (id: string) => {
+    deleteRegistration(id)
+      .then(() => {
+        alert('OK');
+        handleRegistration();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     handleRegistration();
   }, []);
@@ -29,7 +43,10 @@ const DashboardPage = () => {
   return (
     <S.Container>
       <SearchBar />
-      <Collumns registrationGroup={registrationGroup} />
+      <Collumns
+        registrationGroup={registrationGroup}
+        removeRegistration={removeRegistration}
+      />
     </S.Container>
   );
 };

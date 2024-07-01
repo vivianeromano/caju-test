@@ -22,3 +22,7 @@ export const listRegistration = async () => {
     .get<RegistrationType[]>('/registrations')
     .then(response => buildRegistrationGroup(response.data));
 };
+
+export const deleteRegistration = async (id: string) => {
+  return api.delete(`/registrations/${id}`);
+};
