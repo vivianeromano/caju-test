@@ -1,40 +1,30 @@
+import * as S from './styles';
+import RegistrationCard from '../RegistrationCard';
+import { RegistrationGroupType } from '~/types/registrationType';
+import Collumn from '../Column';
 
-import * as S from "./styles";
-import RegistrationCard from "../RegistrationCard";
-
-const allColumns = [
-  { status: 'REVIEW', title: "Pronto para revisar" },
-  { status: 'APPROVED', title: "Aprovado" },
-  { status: 'REPROVED', title: "Reprovado" },
-];
-
-type Props = {
-  registrations?: any[];
+type CollumnsProps = {
+  registrationGroup: RegistrationGroupType;
 };
-const Collumns = (props: Props) => {
+
+const Collumns = ({ registrationGroup }: CollumnsProps) => {
   return (
     <S.Container>
-      {allColumns.map((collum) => {
-        return (
-          <S.Column status={collum.status} key={collum.title}>
-            <>
-              <S.TitleColumn status={collum.status}>
-                {collum.title}
-              </S.TitleColumn>
-              <S.CollumContent>
-                {props?.registrations?.map((registration) => {
-                  return (
-                    <RegistrationCard
-                      data={registration}
-                      key={registration.id}
-                    />
-                  );
-                })}
-              </S.CollumContent>
-            </>
-          </S.Column>
-        );
-      })}
+      <Collumn title="Pronto para revisar" type="REVIEW">
+        {registrationGroup.REVIEW.map(registration => {
+          return <RegistrationCard data={registration} key={registration.id} />;
+        })}
+      </Collumn>
+      <Collumn title="Aprovado" type="APPROVED">
+        {registrationGroup.APPROVED.map(registration => (
+          <RegistrationCard data={registration} key={registration.id} />
+        ))}
+      </Collumn>
+      <Collumn title="Reprovado" type="REPROVED">
+        {registrationGroup.REPROVED.map(registration => (
+          <RegistrationCard data={registration} key={registration.id} />
+        ))}
+      </Collumn>
     </S.Container>
   );
 };
