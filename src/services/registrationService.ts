@@ -2,7 +2,8 @@ import api from './api';
 import {
   RegistrationGroupType,
   initRegistrationGroupType,
-  RegistrationType
+  RegistrationType,
+  RegistrationStatus
 } from '~/types/registrationType';
 
 const buildRegistrationGroup = (
@@ -26,3 +27,8 @@ export const listRegistration = async () => {
 export const deleteRegistration = async (id: string) => {
   return api.delete(`/registrations/${id}`);
 };
+
+export const changeStatusRegistration = async (
+  id: string,
+  status: RegistrationStatus
+) => api.patch(`/registrations/${id}`, { status });

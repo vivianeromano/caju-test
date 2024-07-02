@@ -16,7 +16,13 @@ type ModalProps = {
   action: () => void;
 };
 
-const Modal = ({ open, setOpen, title, description, action }: ModalProps) => {
+const ActionModal = ({
+  open,
+  setOpen,
+  title,
+  description,
+  action
+}: ModalProps) => {
   const handleClose = () => {
     setOpen(false);
   };
@@ -28,9 +34,7 @@ const Modal = ({ open, setOpen, title, description, action }: ModalProps) => {
   return (
     <Dialog
       open={open}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -44,7 +48,7 @@ const Modal = ({ open, setOpen, title, description, action }: ModalProps) => {
         <Button onClick={handleClose} color="secondary">
           Não
         </Button>
-        <Button onClick={handleAction} color="primary" autoFocus>
+        <Button onClick={handleAction} color="primary">
           Sim
         </Button>
       </DialogActions>
@@ -52,4 +56,4 @@ const Modal = ({ open, setOpen, title, description, action }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default ActionModal;

@@ -6,24 +6,16 @@ import {
   HiOutlineCalendar,
   HiOutlineTrash
 } from 'react-icons/hi';
-import { RegistrationType } from '~/types/registrationType';
-import { useState } from 'react';
-import Modal from '~/components/ActionModal';
+import { RegistrationStatus, RegistrationType } from '~/types/registrationType';
+import { useRegistration } from '~/contexts/RegistrationContext';
+import { ActionType } from '~/types/actionType';
 
 type RegistrationCardProps = {
   data: RegistrationType;
-  removeRegistration: (id: string) => void;
 };
 
-const RegistrationCard = ({
-  data,
-  removeRegistration
-}: RegistrationCardProps) => {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+const RegistrationCard = ({ data }: RegistrationCardProps) => {
+  const { removeRegistration, changeStatus, confirmAction } = useRegistration();
 
   return (
     <S.Card>
@@ -40,18 +32,39 @@ const RegistrationCard = ({
         <span>{data.admissionDate}</span>
       </S.IconAndText>
       <S.Actions>
-        <ButtonSmall bgcolor="rgb(255, 145, 154)">Reprovar</ButtonSmall>
-        <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
-        <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>
+        {data.status === RegistrationStatus.REVIEW ? (
+          <>
+            <ButtonSmall
+              bgcolor="rgb(255, 145, 154)"
+              onClick={() => {
+                confirmAction(ActionType.REPROVE, data.id);
+              }}
+            >
+              Reprovar
+            </ButtonSmall>
+            <ButtonSmall
+              bgcolor="rgb(155, 229, 155)"
+              onClick={() => {
+                confirmAction(ActionType.APPROVE, data.id);
+              }}
+            >
+              Aprovar
+            </ButtonSmall>
+          </>
+        ) : (
+          <ButtonSmall
+            bgcolor="#ff8858"
+            onClick={() => {
+              confirmAction(ActionType.REVIEW, data.id);
+            }}
+          >
+            Revisar novamente
+          </ButtonSmall>
+        )}
 
-        <HiOutlineTrash onClick={handleClickOpen} />
-        <Modal
-          open={open}
-          setOpen={setOpen}
-          title="TEST"
-          description="Test"
-          action={() => {
-            removeRegistration(data.id);
+        <HiOutlineTrash
+          onClick={() => {
+            confirmAction(ActionType.REMOVE, data.id);
           }}
         />
       </S.Actions>
