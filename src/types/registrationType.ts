@@ -4,13 +4,16 @@ export enum RegistrationStatus {
   REPROVED = 'REPROVED'
 }
 
-export interface RegistrationType {
+export interface RegistrationType extends RegistrationCreateType {
+  id: string;
+  status: RegistrationStatus;
+}
+
+export interface RegistrationCreateType {
   admissionDate: string;
   email: string;
   employeeName: string;
-  status: RegistrationStatus;
   cpf: string;
-  id: string;
 }
 
 export interface RegistrationGroupType {

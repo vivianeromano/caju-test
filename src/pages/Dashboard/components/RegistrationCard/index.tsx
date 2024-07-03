@@ -15,7 +15,7 @@ type RegistrationCardProps = {
 };
 
 const RegistrationCard = ({ data }: RegistrationCardProps) => {
-  const { removeRegistration, changeStatus, confirmAction } = useRegistration();
+  const { confirmAction } = useRegistration();
 
   return (
     <S.Card>

@@ -13,7 +13,7 @@ type ModalProps = {
   setOpen: Dispatch<React.SetStateAction<boolean>>;
   title: string;
   description: string;
-  action: () => void;
+  action: Function;
 };
 
 const ActionModal = ({

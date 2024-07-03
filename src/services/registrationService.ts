@@ -1,10 +1,13 @@
+import { cleanCPF } from '~/utils/validate';
 import api from './api';
 import {
   RegistrationGroupType,
   initRegistrationGroupType,
   RegistrationType,
-  RegistrationStatus
+  RegistrationStatus,
+  RegistrationCreateType
 } from '~/types/registrationType';
+import { formatDate } from '~/utils/formatDate';
 
 const buildRegistrationGroup = (
   registrations: RegistrationType[]
@@ -32,3 +35,15 @@ export const changeStatusRegistration = async (
   id: string,
   status: RegistrationStatus
 ) => api.patch(`/registrations/${id}`, { status });
+
+export const createRegistration = async (
+  registrarion: RegistrationCreateType
+) => {
+  const data = {
+    ...registrarion,
+    cpf: cleanCPF(registrarion.cpf),
+    admissionDate: formatDate(registrarion.admissionDate),
+    status: RegistrationStatus.REVIEW
+  };
+  api.post<RegistrationType>('/registrations', data);
+};

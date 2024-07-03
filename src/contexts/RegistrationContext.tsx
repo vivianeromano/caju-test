@@ -3,30 +3,32 @@ import {
   useContext,
   useEffect,
   useState,
-  ReactNode,
-  Dispatch
+  ReactNode
 } from 'react';
 import {
   changeStatusRegistration,
   deleteRegistration,
-  listRegistration
+  listRegistration,
+  createRegistration
 } from '~/services/registrationService';
 import { ActionType } from '~/types/actionType';
 import {
   initRegistrationGroupType,
+  RegistrationCreateType,
   RegistrationGroupType,
   RegistrationStatus
 } from '~/types/registrationType';
+import { useConfirmMessage } from './ConfirmMessageContext';
+import Toast from '~/components/Toast';
+import { ToastType } from '~/types/toastType';
 
 type RegistrationContextProps = {
   registrationGroup: RegistrationGroupType;
   fetchRegistrations: () => void;
   removeRegistration: (id: string) => void;
   changeStatus: (id: string, status: RegistrationStatus) => void;
-  openActionModal: boolean;
-  setOpenActionModal: Dispatch<React.SetStateAction<boolean>>;
-  action: any;
   confirmAction: (actionType: ActionType, id: string) => void;
+  saveRegistration: (newRegistration: RegistrationCreateType) => Promise<void>;
 };
 
 const RegistrationContext = createContext<RegistrationContextProps | undefined>(
@@ -36,10 +38,16 @@ const RegistrationContext = createContext<RegistrationContextProps | undefined>(
 export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
   const [registrationGroup, setRegistrationGroup] =
     useState<RegistrationGroupType>(initRegistrationGroupType());
-
-  const [openActionModal, setOpenActionModal] = useState<boolean>(false);
-
-  const [action, setAction] = useState<any>(() => {});
+  const {
+    setOpenActionModal,
+    setAction,
+    openToast,
+    setOpenToast,
+    typeToast,
+    setTypeToast,
+    messageToast,
+    setMessageToast
+  } = useConfirmMessage();
 
   const fetchRegistrations = () => {
     listRegistration()
@@ -51,23 +59,50 @@ export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  const removeRegistration = (id: string) => {
+  const removeRegistration = (id: string) => () => {
     deleteRegistration(id)
       .then(() => {
-        alert('OK');
+        fetchRegistrations();
+        setTypeToast(ToastType.SUCCESS);
+        setMessageToast('Card removido com sucesso!');
+        setOpenToast(true);
+      })
+      .catch(error => {
+        console.log(error);
+        setTypeToast(ToastType.ERROR);
+        setMessageToast('Erro ao remover o card!');
+        setOpenToast(true);
+      });
+  };
+
+  const saveRegistration = (newRegistration: RegistrationCreateType) => {
+    return createRegistration(newRegistration)
+      .then(() => {
+        setTypeToast(ToastType.SUCCESS);
+        setMessageToast('Card criado com sucesso!');
+        setOpenToast(true);
         fetchRegistrations();
       })
       .catch(error => {
         console.log(error);
+        setTypeToast(ToastType.ERROR);
+        setMessageToast('Erro ao criar o card!');
+        setOpenToast(true);
       });
   };
 
   const changeStatus = (id: string, status: RegistrationStatus) => () => {
     changeStatusRegistration(id, status)
       .then(() => {
+        setTypeToast(ToastType.SUCCESS);
+        setMessageToast('Status do card alterado com sucesso!');
+        setOpenToast(true);
         fetchRegistrations();
       })
       .catch(error => {
+        setTypeToast(ToastType.ERROR);
+        setMessageToast('Erro ao alterar status do card!');
+        setOpenToast(true);
         console.log('error', error);
       });
   };
@@ -79,6 +114,8 @@ export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
         setOpenActionModal(true);
         break;
       case ActionType.REMOVE:
+        setAction(() => removeRegistration(id));
+        setOpenActionModal(true);
         break;
       case ActionType.REVIEW:
         setAction(() => changeStatus(id, RegistrationStatus.REVIEW));
@@ -91,8 +128,6 @@ export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
       default:
         console.error('Type Invalid');
     }
-    // setAction(action);
-    // setOpenActionModal(true);
   };
 
   useEffect(() => {
@@ -100,20 +135,26 @@ export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <RegistrationContext.Provider
-      value={{
-        registrationGroup,
-        fetchRegistrations,
-        removeRegistration,
-        changeStatus,
-        openActionModal,
-        setOpenActionModal,
-        action,
-        confirmAction
-      }}
-    >
-      {children}
-    </RegistrationContext.Provider>
+    <>
+      <Toast
+        open={openToast}
+        setOpen={setOpenToast}
+        type={typeToast}
+        message={messageToast}
+      />
+      <RegistrationContext.Provider
+        value={{
+          registrationGroup,
+          fetchRegistrations,
+          removeRegistration,
+          changeStatus,
+          confirmAction,
+          saveRegistration
+        }}
+      >
+        {children}
+      </RegistrationContext.Provider>
+    </>
   );
 };
 
