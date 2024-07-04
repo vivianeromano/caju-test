@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '~/app/store';
 import { useEffect } from 'react';
 import { fetchRegistrations } from '~/features/registration/registrationSlice';
+import { CircularProgress } from '@material-ui/core';
 
 const DashboardPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const registrationGroup = useSelector(
     (state: RootState) => state.registrations.registrationGroup
+  );
+  const loading = useSelector(
+    (state: RootState) => state.registrations.loading
   );
 
   useEffect(() => {
@@ -20,7 +24,11 @@ const DashboardPage = () => {
   return (
     <S.Container>
       <SearchBar />
-      <Collumns registrationGroup={registrationGroup} />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Collumns registrationGroup={registrationGroup} />
+      )}
       <ActionModal
         title="Deseja executar essa ação?"
         description="Essa ação pode não ser reversível"
