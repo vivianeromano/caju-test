@@ -7,15 +7,17 @@ import {
   HiOutlineTrash
 } from 'react-icons/hi';
 import { RegistrationStatus, RegistrationType } from '~/types/registrationType';
-import { useRegistration } from '~/contexts/RegistrationContext';
-import { ActionType } from '~/types/actionType';
+import { ActionType } from '~/types/modalType';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '~/app/store';
+import { confirmAndExecuteAction } from '~/features/registration/registrationSlice';
 
 type RegistrationCardProps = {
   data: RegistrationType;
 };
 
 const RegistrationCard = ({ data }: RegistrationCardProps) => {
-  const { confirmAction } = useRegistration();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <S.Card>
@@ -37,7 +39,12 @@ const RegistrationCard = ({ data }: RegistrationCardProps) => {
             <ButtonSmall
               bgcolor="rgb(255, 145, 154)"
               onClick={() => {
-                confirmAction(ActionType.REPROVE, data.id);
+                dispatch(
+                  confirmAndExecuteAction({
+                    actionType: ActionType.REPROVE,
+                    id: data.id
+                  })
+                );
               }}
             >
               Reprovar
@@ -45,7 +52,12 @@ const RegistrationCard = ({ data }: RegistrationCardProps) => {
             <ButtonSmall
               bgcolor="rgb(155, 229, 155)"
               onClick={() => {
-                confirmAction(ActionType.APPROVE, data.id);
+                dispatch(
+                  confirmAndExecuteAction({
+                    actionType: ActionType.APPROVE,
+                    id: data.id
+                  })
+                );
               }}
             >
               Aprovar
@@ -55,7 +67,12 @@ const RegistrationCard = ({ data }: RegistrationCardProps) => {
           <ButtonSmall
             bgcolor="#ff8858"
             onClick={() => {
-              confirmAction(ActionType.REVIEW, data.id);
+              dispatch(
+                confirmAndExecuteAction({
+                  actionType: ActionType.REVIEW,
+                  id: data.id
+                })
+              );
             }}
           >
             Revisar novamente
@@ -64,7 +81,12 @@ const RegistrationCard = ({ data }: RegistrationCardProps) => {
 
         <HiOutlineTrash
           onClick={() => {
-            confirmAction(ActionType.REMOVE, data.id);
+            dispatch(
+              confirmAndExecuteAction({
+                actionType: ActionType.REMOVE,
+                id: data.id
+              })
+            );
           }}
         />
       </S.Actions>

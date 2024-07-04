@@ -2,10 +2,10 @@ import * as Yup from 'yup';
 
 export const cleanCPF = (cpf: string): string => cpf.replace(/[^\d]+/g, '');
 
-const isValidLengthAndPattern = (cpf: string): boolean =>
+export const isValidLengthAndPattern = (cpf: string): boolean =>
   cpf.length === 11 && !/^(\d)\1+$/.test(cpf);
 
-const calculateCheckDigit = (cpf: string, length: number): number => {
+export const calculateCheckDigit = (cpf: string, length: number): number => {
   const sum = cpf
     .slice(0, length)
     .split('')

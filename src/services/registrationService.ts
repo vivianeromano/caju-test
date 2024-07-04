@@ -21,9 +21,9 @@ const buildRegistrationGroup = (
   );
 
 // TODO: Create erros on catch
-export const listRegistration = async () => {
+export const listRegistration = async (cpf?: string) => {
   return api
-    .get<RegistrationType[]>('/registrations')
+    .get<RegistrationType[]>(`/registrations?cpf=${cpf || ''}`)
     .then(response => buildRegistrationGroup(response.data));
 };
 

@@ -11,7 +11,7 @@ import {
   listRegistration,
   createRegistration
 } from '~/services/registrationService';
-import { ActionType } from '~/types/actionType';
+import { ActionType } from '~/types/modalType';
 import {
   initRegistrationGroupType,
   RegistrationCreateType,
@@ -24,7 +24,7 @@ import { ToastType } from '~/types/toastType';
 
 type RegistrationContextProps = {
   registrationGroup: RegistrationGroupType;
-  fetchRegistrations: () => void;
+  fetchRegistrations: (cpf?: string) => void;
   removeRegistration: (id: string) => void;
   changeStatus: (id: string, status: RegistrationStatus) => void;
   confirmAction: (actionType: ActionType, id: string) => void;
@@ -49,8 +49,8 @@ export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
     setMessageToast
   } = useConfirmMessage();
 
-  const fetchRegistrations = () => {
-    listRegistration()
+  const fetchRegistrations = (cpf?: string) => {
+    listRegistration(cpf)
       .then(data => {
         setRegistrationGroup(data);
       })

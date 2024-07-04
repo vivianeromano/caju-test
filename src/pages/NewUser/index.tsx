@@ -9,10 +9,12 @@ import { IconButton } from '~/components/Buttons/IconButton';
 import routes from '~/router/routes';
 import formatCpf from '~/utils/formatCpf';
 import { validationSchema } from '~/utils/validate';
-import { useRegistration } from '~/contexts/RegistrationContext';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '~/app/store';
+import { saveRegistration } from '~/features/registration/registrationSlice';
 
 const NewUserPage = () => {
-  const { saveRegistration } = useRegistration();
+  const dispatch = useDispatch<AppDispatch>();
   const formik = useFormik({
     initialValues: {
       admissionDate: '',
@@ -22,8 +24,8 @@ const NewUserPage = () => {
     },
     validationSchema,
     onSubmit: values => {
-      saveRegistration(values).then(() => {
-        history.push(routes.dashboard);
+      dispatch(saveRegistration(values)).then(() => {
+        goToHome();
       });
     }
   });

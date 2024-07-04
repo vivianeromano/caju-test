@@ -5,24 +5,42 @@ import { IconButton } from '~/components/Buttons/IconButton';
 import TextField from '~/components/TextField';
 import routes from '~/router/routes';
 import * as S from './styles';
-import { useRegistration } from '~/contexts/RegistrationContext';
+import { useEffect, useState } from 'react';
+import { validateCPF } from '~/utils/validate';
+import formatCpf from '~/utils/formatCpf';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '~/app/store';
+import { fetchRegistrations } from '~/features/registration/registrationSlice';
 
 export const SearchBar = () => {
   const history = useHistory();
-  const { fetchRegistrations } = useRegistration();
+  const dispatch = useDispatch<AppDispatch>();
+  const [cpf, setCpf] = useState('');
 
   const goToNewAdmissionPage = () => {
     history.push(routes.newUser);
   };
 
+  useEffect(() => {
+    if (validateCPF(cpf)) {
+      dispatch(fetchRegistrations(cpf));
+    } else {
+      dispatch(fetchRegistrations());
+    }
+  }, [cpf, dispatch]);
+
   return (
     <S.Container>
-      <TextField placeholder="Digite um CPF válido" />
+      <TextField
+        value={formatCpf(cpf)}
+        onChange={e => setCpf(e.target.value)}
+        placeholder="Digite um CPF válido"
+      />
       <S.Actions>
         <IconButton
           aria-label="refetch"
           onClick={() => {
-            fetchRegistrations();
+            dispatch(fetchRegistrations());
           }}
         >
           <HiRefresh />
