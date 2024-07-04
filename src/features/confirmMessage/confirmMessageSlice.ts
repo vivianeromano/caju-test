@@ -28,19 +28,22 @@ const confirmMessageSlice = createSlice({
       state.modal = { ...action.payload, open: true };
     },
     setCloseActionModal: state => {
-      state.modal = {
-        open: false,
-        actionType: undefined,
-        id: undefined
-      };
+      state.modal = initialState.modal;
     },
     setToast: (state, action: PayloadAction<ManageToast>) => {
       state.toast = action.payload;
+    },
+    setCloseToast: state => {
+      state.toast = initialState.toast;
     }
   }
 });
 
-export const { setOpenActionModal, setCloseActionModal, setToast } =
-  confirmMessageSlice.actions;
+export const {
+  setOpenActionModal,
+  setCloseActionModal,
+  setToast,
+  setCloseToast
+} = confirmMessageSlice.actions;
 
 export default confirmMessageSlice.reducer;

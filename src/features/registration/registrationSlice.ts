@@ -85,20 +85,24 @@ export const saveRegistration = createAsyncThunk(
     try {
       dispatch(setLoading(true));
       await createRegistration(newRegistration);
-      setToast({
-        openToast: true,
-        typeToast: ToastType.SUCCESS,
-        messageToast: 'Card criado com sucesso!'
-      });
+      dispatch(
+        setToast({
+          openToast: true,
+          typeToast: ToastType.SUCCESS,
+          messageToast: 'Card criado com sucesso!'
+        })
+      );
       dispatch(fetchRegistrations());
       dispatch(setLoading(false));
     } catch (error) {
       dispatch(setLoading(false));
-      setToast({
-        openToast: true,
-        typeToast: ToastType.ERROR,
-        messageToast: 'Erro ao criar o card!'
-      });
+      dispatch(
+        setToast({
+          openToast: true,
+          typeToast: ToastType.ERROR,
+          messageToast: 'Erro ao criar o card!'
+        })
+      );
       dispatch(setError('Erro ao criar o card'));
     }
   }
@@ -112,22 +116,25 @@ export const changeStatus = createAsyncThunk(
   ) => {
     try {
       dispatch(setLoading(true));
-      console.log('changeStatus', id, status);
       await changeStatusRegistration(id, status);
-      setToast({
-        openToast: true,
-        typeToast: ToastType.SUCCESS,
-        messageToast: 'Status do card alterado com sucesso!'
-      });
+      dispatch(
+        setToast({
+          openToast: true,
+          typeToast: ToastType.SUCCESS,
+          messageToast: 'Status do card alterado com sucesso!'
+        })
+      );
       dispatch(fetchRegistrations());
       dispatch(setLoading(false));
     } catch (error) {
       dispatch(setLoading(false));
-      setToast({
-        openToast: true,
-        typeToast: ToastType.ERROR,
-        messageToast: 'Erro ao alterar status do card!'
-      });
+      dispatch(
+        setToast({
+          openToast: true,
+          typeToast: ToastType.ERROR,
+          messageToast: 'Erro ao alterar status do card!'
+        })
+      );
       dispatch(setError('Erro ao alterar status do card'));
     }
   }

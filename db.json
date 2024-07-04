@@ -39,6 +39,14 @@
       "employeeName": "Adrisson Galvao",
       "cpf": "01794001263",
       "status": "REVIEW"
+    },
+    {
+      "id": "e2bb",
+      "admissionDate": "17/07/1993",
+      "email": "baunilha@caju.com.br",
+      "employeeName": "Baunilha Pikeno",
+      "cpf": "73197933001",
+      "status": "REPROVED"
     }
   ]
 }

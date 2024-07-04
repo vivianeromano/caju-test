@@ -2,21 +2,17 @@ import Router from '~/router';
 import { Header } from './components/Header';
 import { Provider } from 'react-redux';
 import store from './app/store';
-// import { RegistrationProvider } from '~/contexts/RegistrationContext';
-// import { ConfirmMessageProvider } from './contexts/ConfirmMessageContext';
+import Toast from './components/Toast';
 
 function App() {
   return (
-    // <ConfirmMessageProvider>
-    // <RegistrationProvider>
     <Provider store={store}>
+      <Toast />
       <Header>
         <h1>Caju Front Teste</h1>
       </Header>
       <Router />
     </Provider>
-    // </RegistrationProvider>
-    // </ConfirmMessageProvider>
   );
 }
 

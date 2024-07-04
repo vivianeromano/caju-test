@@ -15,7 +15,6 @@ const DashboardPage = () => {
 
   useEffect(() => {
     dispatch(fetchRegistrations());
-    console.log('qqq');
   }, [dispatch]);
 
   return (
