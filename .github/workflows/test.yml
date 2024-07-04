@@ -1,4 +1,4 @@
-name: Run Tests on Pull Requests Caju
+name: Run Tests on Pull Requests
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [21.x]
+        node-version: [16.x, 18.x]
 
     steps:
       - name: Checkout repository
@@ -22,8 +22,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/yarn
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Run tests
-        run: npm run test:dev
+        run: yarn test:dev
