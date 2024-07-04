@@ -1,7 +1,7 @@
 import * as S from './styles';
 import RegistrationCard from '../RegistrationCard';
 import { RegistrationGroupType } from '~/types/registrationType';
-import Collumn from '../Column';
+import Column from '../Column';
 
 type CollumnsProps = {
   registrationGroup: RegistrationGroupType;
@@ -10,21 +10,21 @@ type CollumnsProps = {
 const Collumns = ({ registrationGroup }: CollumnsProps) => {
   return (
     <S.Container>
-      <Collumn title="Pronto para revisar" type="REVIEW">
+      <Column title="Pronto para revisar" type="REVIEW">
         {registrationGroup.REVIEW.map(registration => {
           return <RegistrationCard data={registration} key={registration.id} />;
         })}
-      </Collumn>
-      <Collumn title="Aprovado" type="APPROVED">
+      </Column>
+      <Column title="Aprovado" type="APPROVED">
         {registrationGroup.APPROVED.map(registration => (
           <RegistrationCard data={registration} key={registration.id} />
         ))}
-      </Collumn>
-      <Collumn title="Reprovado" type="REPROVED">
+      </Column>
+      <Column title="Reprovado" type="REPROVED">
         {registrationGroup.REPROVED.map(registration => (
           <RegistrationCard data={registration} key={registration.id} />
         ))}
-      </Collumn>
+      </Column>
     </S.Container>
   );
 };

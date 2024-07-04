@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import * as S from './styles';
 
-type CollumnsProps = {
+type ColumnsProps = {
   title: string;
   children: ReactNode;
   type: 'REVIEW' | 'APPROVED' | 'REPROVED';
 };
 
-const Collumn = ({ title, children, type }: CollumnsProps) => {
+const Column = ({ title, children, type }: ColumnsProps) => {
   return (
     <S.Column type={type} key={title}>
       <>
@@ -17,4 +17,4 @@ const Collumn = ({ title, children, type }: CollumnsProps) => {
     </S.Column>
   );
 };
-export default Collumn;
+export default Column;

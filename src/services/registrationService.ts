@@ -20,7 +20,6 @@ const buildRegistrationGroup = (
     initRegistrationGroupType()
   );
 
-// TODO: Create erros on catch
 export const listRegistration = async (cpf?: string) => {
   return api
     .get<RegistrationType[]>(`/registrations?cpf=${cpf || ''}`)

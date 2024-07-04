@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '~/app/store';
 import { useEffect } from 'react';
 import { fetchRegistrations } from '~/features/registration/registrationSlice';
-import { CircularProgress } from '@material-ui/core';
+import Loading from '~/components/Loading';
 
 const DashboardPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +25,7 @@ const DashboardPage = () => {
     <S.Container>
       <SearchBar />
       {loading ? (
-        <CircularProgress />
+        <Loading />
       ) : (
         <Collumns registrationGroup={registrationGroup} />
       )}
